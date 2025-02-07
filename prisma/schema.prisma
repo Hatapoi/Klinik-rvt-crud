@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Poli {
+  id         String       @id @default(cuid())
+  nama       String
+  penanganan Penanganan[]
+  History    History[]
+}
+
+model Penanganan {
+  id                String              @id @default(cuid())
+  nama              String
+  harga             Int
+  poliId            String
+  poli              Poli                @relation(fields: [poliId], references: [id])
+  historyPenanganan HistoryPenanganan[]
+}
+
+model User {
+  id           String    @id @default(cuid())
+  username     String
+  tanggalLahir DateTime
+  tempatLahir  String
+  alamat       String
+  nik          String
+  bpjs         String?
+  history      History[]
+}
+
+model History {
+  id         String              @id @default(cuid())
+  userId     String
+  user       User                @relation(fields: [userId], references: [id])
+  poliId     String
+  poli       Poli                @relation(fields: [poliId], references: [id])
+  penanganan HistoryPenanganan[]
+}
+
+model HistoryPenanganan {
+  id           String     @id @default(cuid())
+  penanganan   Penanganan @relation(fields: [penangananId], references: [id])
+  penangananId String
+  History      History    @relation(fields: [historyId], references: [id])
+  historyId    String
+}
