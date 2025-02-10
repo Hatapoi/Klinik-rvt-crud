@@ -10,6 +10,8 @@ const getAllPoli = async() => {
 const getPoliById = async(id) => {
     const poli = await allDataById(id);
 
+    if(!poli) throw Error("Poli is not Found");
+
     return poli;
 }
 
@@ -20,12 +22,16 @@ const addPoli = async(newPoli) => {
 }
 
 const updatePoli = async(id, nama) => {
+    await getPoliById(id);
+
     const poli = await updateData(id, nama);
 
     return poli;
 }
 
 const deletePoli = async(id) => {
+    await getPoliById(id);
+
     const deletePoli = await deleteData(id);
 
     return deletePoli;
