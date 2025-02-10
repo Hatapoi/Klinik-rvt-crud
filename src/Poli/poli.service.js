@@ -13,8 +13,8 @@ const getPoliById = async(id) => {
     return poli;
 }
 
-const addPoli = async() => {
-    const poli = await createData();
+const addPoli = async(newPoli) => {
+    const poli = await createData(newPoli);
 
     return poli;
 }
@@ -25,7 +25,7 @@ const updatePoli = async(id, nama) => {
     return poli;
 }
 
-const deletePoli = async() => {
+const deletePoli = async(id) => {
     const deletePoli = await deleteData(id);
 
     return deletePoli;
@@ -36,5 +36,5 @@ module.exports = {
     getPoliById,
     addPoli,
     updatePoli,
-    deletePoli
+    deletePoli,
 }
