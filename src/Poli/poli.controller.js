@@ -1,6 +1,7 @@
 const express = require("express");
 const prisma = require("../db/index");
 const { getAllPoli, getPoliById } = require("./poli.service");
+const { updateData, deleteData } = require("./poli.repository");
 
 const router = express.Router();
 
@@ -47,10 +48,7 @@ router.put("/:id", async (req, res) => {
         const { id } = req.params;
         const { nama } = req.body;
     
-        const updatePoli = await prisma.poli.update({
-            where: { id },
-            data: { nama },
-        })
+        const updatePoli = await updateData(id, nama);
     
         res.status(200).json({ message: "Poli berhasil diupdate", updatePoli })
     } catch (error) {
@@ -62,7 +60,7 @@ router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
     
-        const deletePoli = await prisma.poli.delete({ where: { id } })
+        const deletePoli = await deleteData(id);
     
         res.status(204).json({ message: "Poli berhasil dihapus" })
     } catch (error) {
