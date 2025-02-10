@@ -14,7 +14,7 @@ const allDataById = async(id) => {
     return poli;
 }
 
-const createData = async() => {
+const createData = async(newPoli) => {
     const poli = await prisma.poli.create({
         data: {
             nama: newPoli.nama
