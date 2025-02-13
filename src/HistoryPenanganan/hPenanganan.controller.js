@@ -1,11 +1,11 @@
 const express = require("express");
-const prisma = require("../db/index");
+const { getAllHistoryPenanganan, getHistoryPenangananById, addHistoryPenanganan, updateHistoryPenanganan, deleteHistoryPenanganan } = require("./hpenanganan.service");
 
 const router = express.Router();
 
 router.get("/", async(req, res) => {
     try {
-        const historyPenanganan = await prisma.historyPenanganan.findMany();
+        const historyPenanganan = await getAllHistoryPenanganan();
         
         res.status(200).json(historyPenanganan)
     } catch (error) {
@@ -17,11 +17,7 @@ router.get("/:id", async(req, res) => {
     try {
         const { id } = req.params;
         
-        const historyPenanganan = await prisma.historyPenanganan.findUnique({
-            where: {
-                id
-            }
-        });
+        const historyPenanganan = await getHistoryPenangananById(id);
 
         res.status(200).json(historyPenanganan);
     } catch (error) {
@@ -33,12 +29,7 @@ router.post("/", async(req, res) => {
     try {
         const {penangananId, historyId} = req.body;
     
-        const historyPenanganan = await prisma.historyPenanganan.create({
-            data: {
-                penangananId,
-                historyId
-            }
-        });
+        const historyPenanganan = await addHistoryPenanganan(penangananId, historyId);
 
         res.status(201).json({message: "HistoryPenanganan berhasil ditambahkan", historyPenanganan});
     } catch (error) {
@@ -51,19 +42,7 @@ router.patch("/:id", async(req, res) => {
         const { id } = req.params;
         const {penangananId, historyId} = req.body;
 
-        const historyPenangananId = await prisma.historyPenanganan.findUnique({
-            where: {id}
-        });
-
-        if(!historyPenangananId) throw Error("HistoryPenanganan not Found");
-
-        const historyPenanganan = await prisma.historyPenanganan.update({
-            where: {id},
-            data: {
-                penangananId,
-                historyId
-            }
-        });
+        const historyPenanganan = await updateHistoryPenanganan(id, penangananId, historyId);
 
         res.status(200).json({message: "HistoryPenanganan berhasil diUpdate", historyPenanganan})
     } catch (error) {
@@ -74,21 +53,8 @@ router.patch("/:id", async(req, res) => {
 router.delete("/:id", async(req, res) => {
     try {
         const { id } = req.params;
-        const {penangananId, historyId} = req.body;
     
-        const historyPenangananId = await prisma.historyPenanganan.findUnique({
-            where: {id}
-        });
-    
-        if(!historyPenangananId) throw Error("HistoryPenanganan not Found");
-    
-        const historyPenanganan = await prisma.historyPenanganan.delete({
-            where: {id},
-            data: {
-                penangananId,
-                 historyId
-            }
-        });
+        const historyPenanganan = await deleteHistoryPenanganan(id);
 
         res.status(200).json("HisotryPenanganan berhasil Dihapus");
     } catch (error) {
