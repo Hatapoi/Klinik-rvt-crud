@@ -14,11 +14,13 @@ const userController = require("./User/user.controller");
 const historyController = require("./History/history.controller");
 const historyPenanganan = require("./HistoryPenanganan/hPenanganan.controller");
 
+
 app.use("/poli", poliController)
 app.use("/penanganan", penangananController);
 app.use("/user", userController);
 app.use("/history", historyController);
 app.use("/hpenanganan", historyPenanganan);
+
 
 app.listen(PORT, () => {
     console.log(`express API running on ${PORT}`)
