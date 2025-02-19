@@ -1,12 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const app = express();
+const cors = require("cors");
 
 dotenv.config();
 
 const PORT = process.env.PORT;
 
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 const poliController = require("./Poli/poli.controller");
 const penangananController = require("./Penanganan/penanganan.controller");
